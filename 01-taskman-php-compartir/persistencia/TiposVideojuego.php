@@ -48,7 +48,7 @@ class TiposVideojuego {
 			SELECT
 				id_tipo_videojuego as id,
 				nombre as texto
-			FROM tipos_videojuego vv
+			FROM tipo_videojuegos vv
 			where vv.nombre like ?;
 		SQL;		
 

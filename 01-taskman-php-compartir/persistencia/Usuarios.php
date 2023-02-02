@@ -18,15 +18,15 @@ class Usuarios {
 
 		public function addUsuario(Usuario $u){
 
-			$consulta="INSERT INTO usuarios (id, usuario, password, nombre_completo, rol)
+			$consulta="INSERT INTO usuarios (id_usuario, usuario, password, nombre_completo, rol)
 						VALUES(null,?,?,?,?)";
 			
 			$idUsuario=$u->getIdUsuario();
-			$idRol=$u->getIdRol();
-			$login=$u->getLogin();
-			$nif=$u->getNif();
-			$password=$u->getPassword();
-			$activo=$u->getActivo();
+            $usuario=$u->getUsuario();
+            $password=$u->getPassword();
+            $nombreCompleto=$u->getNombreCompleto();
+			$rol=$u->getRol();
+
 
 			$query=$this->db->preparar($consulta);				
 				$query->bindParam(1, $u->getUsuario());

@@ -48,7 +48,7 @@ class EstadosTipoVideojuego {
 			SELECT
 				id_estado as id, 
 				nombre as texto
-			FROM estados_tipo_videojuego vv
+			FROM estados_tipo_videojuegos vv
 			where vv.id_tipo_videojuego = ?;
 		SQL;		
 

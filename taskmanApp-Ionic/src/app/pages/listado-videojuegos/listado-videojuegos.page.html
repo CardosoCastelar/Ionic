@@ -10,7 +10,9 @@
         </app-filtro-busqueda>
 
         <!-- Añade el botón añadir al final de a línea-->
-        <ion-button slot="end" routerLink="/editar-videojuego">
+
+
+    <ion-button slot="end" [routerLink]="['/crear-videojuego' ]" >
           <ion-icon name="add"></ion-icon>
         </ion-button>
 

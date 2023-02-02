@@ -1,5 +1,5 @@
 <?php
-class Tareas{
+class Videojuegos{
 		
 		private static $instancia;
 		private $db;
@@ -8,7 +8,7 @@ class Tareas{
 			$this->db = Conexion::singleton_conexion();
 		}
 
-		public static function singletonTareas(){
+		public static function singletonVideojuegos(){
 			if(!isset(self::$instancia)){
 				$miclase= __CLASS__;
 				self::$instancia = new $miclase;
@@ -18,15 +18,15 @@ class Tareas{
 
 		public function addVideojuego(Videojuego $v){
 
-			$consulta="INSERT INTO videojuegos (id_videojuego, titulo, usuario_informador_id, usuario_asignado_id, tipo_videojuego_id, estado_tipo_videojuego_id, etiquetas, descripcion, fecha_alta, fecha_vencimiento, hora_vencimiento)
+			$consulta="INSERT INTO videojuegos (id_videojuego, titulo, id_informador, id_asignado, id_tipo_videojuego, id_estado, descripcion, 
+                         fecha_alta, fecha_vencimiento, hora_vencimiento)
 						VALUES(null,?,?,?,?,?,?,?,?,?)";			
 
 			$titulo = $v->getTitulo();
-			$idInformadorUsuario = $v->getIdInformadorUsuario();
-			$idAsignadoUsuario = $v->getIdAsignadoUsuario();
-			$idTipoVideojuego = $v->getIdTipoVideojuego();
-			$idEstadoTipoVideojuego = $v->getIdEstadoTipoVideojuego();
-			$etiquetas = $v->getEtiquetas();
+			$idInformador = $v->getIdInformador();
+			$idAsignado = $v->getIdAsignado();
+			$idTipoVideojuego = $v->getTipo();
+			$idEstado = $v->getEstado();
 			$descripcion = $v->getDescripcion();
 			$fechaAlta = $v->getFechaAlta();
 			$fechaVencimiento = $v->getFechaVencimiento();
@@ -34,11 +34,10 @@ class Tareas{
 
 			$query=$this->db->preparar($consulta);				
 				$query->bindParam(1, $titulo);
-				$query->bindParam(2, $idInformadorUsuario);
-				$query->bindParam(3, $idAsignadoUsuario);
+				$query->bindParam(2, $idInformador);
+				$query->bindParam(3, $idAsignado);
 				$query->bindParam(4, $idTipoVideojuego);
-				$query->bindParam(5, $idEstadoTipoVideojuego);
-				$query->bindParam(6, $idEtiquetas);
+				$query->bindParam(5, $idEstado);
 				$query->bindParam(7, $descripcion);
 				$query->bindParam(8, $fechaAlta);
 				$query->bindParam(9, $fechaVencimiento);
@@ -58,24 +57,22 @@ class Tareas{
 		public function setVideojuego(Videojuego $v){
 
 			$idVideojuego = $v->getIdVideojuego();
-			$titulo = $v->getTitulo();
-			$idInformadorUsuario = $v->getIdInformadorUsuario();
-			$idAsignadoUsuario = $v->getIdAsignadoUsuario();
-			$idTipoVideojuego = $v->getIdTipoVideojuego();
-			$idEstadoTipoVideojuego = $v->getIdEstadoTipoVideojuego();
-			$etiquetas = $v->getEtiquetas();
-			$descripcion = $v->getDescripcion();
-			$fechaAlta = $v->getFechaAlta();
-			$fechaVencimiento = $v->getFechaVencimiento();
-			$horaVencimiento = $v->getHoraVencimiento();
+            $titulo = $v->getTitulo();
+            $idInformador = $v->getIdInformador();
+            $idAsignado = $v->getIdAsignado();
+            $idTipoVideojuego = $v->getTipo();
+            $idEstado = $v->getEstado();
+            $descripcion = $v->getDescripcion();
+            $fechaAlta = $v->getFechaAlta();
+            $fechaVencimiento = $v->getFechaVencimiento();
+            $horaVencimiento = $v->getHoraVencimiento();
 
-			$query=$this->db->preparar($this::SQL_UPDATE_TAREA);				
+			$query=$this->db->preparar($this::SQL_UPDATE_VIDEOJUEGO);
 				$query->bindParam(1, $titulo);
-				$query->bindParam(2, $idInformadorUsuario);
-				$query->bindParam(3, $idAsignadoUsuario);
+				$query->bindParam(2, $idInformador);
+				$query->bindParam(3, $idAsignado);
 				$query->bindParam(4, $idTipoVideojuego);
-				$query->bindParam(5, $idEstadoTipoVideojuego);
-				$query->bindParam(6, $etiquetas);
+				$query->bindParam(5, $idEstado);
 				$query->bindParam(7, $descripcion);
 				$query->bindParam(8, $fechaAlta);
 				$query->bindParam(9, $fechaVencimiento);
@@ -187,7 +184,7 @@ class Tareas{
 			    ui.usuario as informador,
 				v.id_asignado,
 				ua.usuario as asignado, 
-				v.tipo as id_tipo_videojuego,
+				v.tipo_videojuego as id_tipo_videojuego,
 				vv.nombre as tipo,
 				v.estado as id_estado,
 				evv.nombre as estado,
@@ -196,10 +193,10 @@ class Tareas{
 				fecha_vencimiento, 
 				hora_vencimiento
 			FROM videojuegos v
-				inner join usuarios ui on v.id_informador_usuario = ui.id_usuario
-				inner join usuarios ua on v.id_asignado_usuario = ua.id_usuario
-				inner join tipos_videojuego vv on v.tipo = vv.id_tipo_videojuego
-				inner join estados_tipo_videojuego evv on v.estado = evv.id_estado
+				inner join usuarios ui on v.id_informador = ui.id_usuario
+				inner join usuarios ua on v.id_asignado = ua.id_usuario
+				inner join tipo_videojuegos vv on v.tipo_videojuego = vv.id_tipo_videojuego
+				inner join estados_tipo_videojuegos evv on v.estado = evv.id_estado
 			where v.id_videojuego = ?;
 		SQL;
 
@@ -207,14 +204,14 @@ class Tareas{
 			SELECT
 				id_videojuego,
 				titulo, 
-				t.id_informador,
+				v.id_informador,
 				ui.usuario as informador, 
-				t.id_asignado,
+				v.id_asignado,
 				ua.usuario as asignado, 
-				t.tipo as id_tipo_videojuego,
-				tt.nombre as tipo, 
-				t.estado as id_estado,
-				ett.nombre as estado, 
+				v.tipo_videojuego as id_tipo_videojuego,
+				vv.nombre as tipo, 
+				v.estado as id_estado,
+				etv.nombre as estado, 
 				descripcion, 
 				fecha_alta, 
 				fecha_vencimiento, 
@@ -222,8 +219,8 @@ class Tareas{
 			FROM videojuegos v
 				inner join usuarios ui on v.id_informador = ui.id_usuario
 				inner join usuarios ua on v.id_asignado = ua.id_usuario
-				inner join tipos_tarea vv on v.tipo = vv.id_tipo_tarea
-				inner join estados_tipo_videojuego evv on v.estado = evv.id_estado
+				inner join tipo_videojuegos vv on v.tipo_videojuego = vv.id_tipo_videojuego
+				inner join estados_tipo_videojuegos etv on v.estado = etv.id_estado
 			where v.titulo like ?;
 		SQL;
 
@@ -235,8 +232,8 @@ class Tareas{
 			SELECT
 				count(id_videojuego) as contador,
 				evv.nombre as estado
-			FROM videojugos v
-				inner join estados_tipo_videojuego evv on v.estado = evv.id_estado
+			FROM videojuegos v
+				inner join estados_tipo_videojuegos evv on v.estado = evv.id_estado
 			group by evv.nombre
 		SQL;
 

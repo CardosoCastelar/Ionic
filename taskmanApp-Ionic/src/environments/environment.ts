@@ -6,7 +6,9 @@ export const environment = {
   production: false,
 
   // URL Base de los servicios de taskman
-  taskmanBaseUrl: 'http://localhost:8100',
+  taskmanBaseUrl: 'http://localhost',
+  //taskmanBaseUrl: 'http://localhost',
+
 
   // URL Base de los servicios de taskman
   // taskmanBaseUrlSpring: 'http://localhost:8080/api',

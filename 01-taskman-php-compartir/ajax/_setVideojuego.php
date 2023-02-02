@@ -9,7 +9,7 @@
 
     // Obtiene los valores que vienen en el array asociativo
     
-    $idVideojuego = $objeto["videojuegoId"];
+    $idVideojuego = $objeto["id_videojuego"];
     $titulo = $objeto["titulo"];
     $idInformador = $objeto["informadorId"];
     $idAsignado = $objeto["asignado"];
@@ -43,9 +43,9 @@
     $respuesta['ok'] = "1";
     $respuesta['mensaje'] = "";
     $respuesta['datos'] = [
-        "id" => $videojuego->getIdVideojuego(),
+        "id_videojuegov" => $videojuego->getIdVideojuego(),
         "titulo" => $videojuego->getTitulo(),
-        "informadorId" => $videojuego->getIdInformador(),
+        "informador" => $videojuego->getIdInformador(),
         "asignado" => $videojuego->getIdAsignado(),
         "tipo" => $videojuego->getTipo(),
         "estado" => $videojuego->getEstado(),

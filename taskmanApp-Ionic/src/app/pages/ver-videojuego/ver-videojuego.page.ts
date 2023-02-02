@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap, tap } from 'rxjs';
 import { Videojuego } from 'src/app/interfaces/videojuego.interface';
-import { VideojuegosSpringService } from 'src/app/services/videojuegos-spring.service';
+import {VideojuegosService} from "../../services/videojuegos.service";
 
 @Component({
   selector: 'app-ver-videojuego',
@@ -23,7 +23,7 @@ constructor(
   private activatedRoute    : ActivatedRoute,
   private router            : Router,
 
-  private videojuegosService     : VideojuegosSpringService
+  private videojuegosService     : VideojuegosService
 
 ) { }
 

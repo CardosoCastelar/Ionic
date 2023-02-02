@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {  ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
 import {EditarVideojuegoPageRoutingModule} from './editar-videojuego-routing.module';
 
 import { ComponentsModule } from 'src/app/components/components.module';
-import {EditarVideojuegosPage} from "./editar-videojuego.page";
+import {EditarVideojuegoPage} from "./editar-videojuego.page";
 
 @NgModule({
-    declarations: [EditarVideojuegosPage],
+    declarations: [EditarVideojuegoPage],
     imports: [
         CommonModule,
         ReactiveFormsModule,

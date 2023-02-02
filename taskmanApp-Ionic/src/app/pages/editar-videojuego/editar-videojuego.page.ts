@@ -1,26 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap, tap } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AlertController, ToastController} from '@ionic/angular';
+import {switchMap, tap} from 'rxjs';
+import {EntradaSelect} from 'src/app/interfaces/select.interface';
 
-import { ValidacionService} from "../../validators/shared/validacion.service";
-import { DialogService } from 'src/app/shared/services/dialog.service';
-import { EstadosVideojuegoService } from 'src/app/services/estados-videojuego.service';
+import {UsuariosService} from 'src/app/services/usuarios.service';
+import {ValidacionService} from 'src/app/validators/shared/validacion.service';
+import {VideojuegosService} from "../../services/videojuegos.service";
+import {EstadosVideojuegosService} from "../../services/estados-videojuego.service";
+import {TiposVideojuegoService} from "../../services/tipos-videojuego.service";
+import {ValidacionVideojuegosService} from "../../validators/videojuegos/validacion-videojuegos.service";
 
-import { EstadoTipoVideojuego } from 'src/app/interfaces/videojuego-estado.interface';
-import { TipoVideojuego } from 'src/app/interfaces/videojuego-tipo.interface';
-import { TiposVideojuegoService} from "../../services/tipos-videojuego.service";
-import { Videojuego } from '../../interfaces/videojuego.interface';
-import { VideojuegosSpringService } from '../../services/videojuegos-spring.service';
-import {Usuario} from "../../interfaces/usuario.interface";
-import {UsuariosService} from "../../services/usuarios.service";
 
 @Component({
   selector: 'app-editar-videojuego',
   templateUrl: './editar-videojuego.page.html',
-  styleUrls: ['./editar-videojuego.page.scss']
+  styleUrls: ['./editar-videojuego.page.scss'],
 })
-export class EditarVideojuegosPage implements OnInit {
+export class EditarVideojuegoPage implements OnInit {
 
   // Defino el formulario
   // En esta definición incluyo
@@ -29,63 +27,49 @@ export class EditarVideojuegosPage implements OnInit {
   // - Validaciones locales
   // - Validaciones asíncronas
   formulario: FormGroup = this.fb.group({
-    id                : [-1],
+    id_videojuego: [-1],
 
-    titulo            : [ '',
-      [ Validators.required/*, this.validacionService.validarEmpiezaMayuscula ],
-                          [ this.validacionTituloService*/ ]
+    titulo: ['',Validators.required],
+    //   [Validators.required, this.validacionService.validarEmpiezaMayuscula],
+    //   [this.validacionTituloService]
+    // ],
+
+    id_informador: ['', [Validators.required]],
+    id_asignado: ['', [Validators.required]],
+
+    id_tipo_videojuego: ['', [Validators.required]],
+
+    id_estado: [{
+      value: -1,
+      disabled: true
+    },
+      [Validators.required]
     ],
 
-    // Ahora el usuario informador es un objeto
-    usuarioInformador: this.fb.group({
-      id     : ['', [ Validators.required] ],
-    }),
+    fecha_alta: [''],
+    fecha_vencimiento: [''],
+    hora_vencimiento: [''],
 
-    // Ahora el usuario asignado es un objeto
-    usuarioAsignado: this.fb.group({
-      id     : ['', [ Validators.required] ],
-    }),
-
-    // Ahora el tipoVideojuego es un objeto
-    tipoVideojuego: this.fb.group({
-      id     : ['', [ Validators.required] ],
-    }),
-
-    // Ahora el estadoTipoVideojuego es un objeto
-    estadoTipoVideojuego: this.fb.group({
-      id     : [
-        {
-          value: -1,
-          disabled: false
-        },
-        [ Validators.required ]
-      ],
-    }),
-
-    fechaAlta         : [''],
-    fechaVencimiento  : [''],
-    horaVencimiento   : [''],
-
-    descripcion       : ['', [ Validators.required] ],
+    descripcion: ['', [Validators.required]],
 
   }, {
     // 008 Este segundo argumento que puedo enviar al formgroup permite por ejemplo ejecutar
     // validadores sincronos y asíncronos. Son validaciones al formgroup
-    validators: [ this.validacionService.camposNoIguales('usuarioInformador.id', 'usuarioAsignado.id') ]
+    validators: [this.validacionService.camposNoIguales('id_informador', 'id_asignado')]
   });
 
   // Defino campos sueltos auxiliares que voy a utilizar
   // En este caso utilizo este para el datalist aunque en este caso
   // lo podría meter dentro del formulario ya que no va a afectar al funcionamiento.
-  nombreInformador    : FormControl = this.fb.control('', Validators.required);
+  nombreInformador: FormControl = this.fb.control('', Validators.required);
 
   // Estos arrays contendrán los elementos que voy a cargar en los selects
-  selectInformador    : Usuario[] = [];
-  selectAsignado      : Usuario[] = [];
-  selectTiposVideojuego    : TipoVideojuego[] = [];
-  selectEstadosVideojuego  : EstadoTipoVideojuego[] = [];
+  selectInformador: EntradaSelect[] = [];
+  selectAsignado: EntradaSelect[] = [];
+  selectTiposVideojuego: EntradaSelect[] = [];
+  selectEstadosVideojuego: EntradaSelect[] = [];
 
-  // Indica si el videojuego se está actualizando
+  // Indica si la tarea se está actualizando
   actualizando: boolean = false;
 
   //-------------------------------------------------------------------------------------
@@ -93,51 +77,45 @@ export class EditarVideojuegosPage implements OnInit {
   //-------------------------------------------------------------------------------------
 
   constructor(
-
-    private activatedRoute    : ActivatedRoute,
-    private fb                : FormBuilder,
-    private router            : Router,
-
-    private dialogService     : DialogService,
-
-    private estadosService    : EstadosVideojuegoService,
-    private videojuegosService     : VideojuegosSpringService,
-    private tiposVideojuegoService : TiposVideojuegoService,
-    private usuariosService   : UsuariosService,
-
-    private validacionService       : ValidacionService,
-
-
-  ) { }
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router,
+    private estadosService: EstadosVideojuegosService,
+    private videojuegosService: VideojuegosService,
+    private tiposVideojuegoService: TiposVideojuegoService,
+    private usuariosService: UsuariosService,
+    private validacionService: ValidacionService,
+    private validacionVideojuegosService: ValidacionVideojuegosService,
+    private validacionTituloService: ValidacionVideojuegosService,
+    private alertController: AlertController,
+    private toastController: ToastController
+  ) {
+  }
 
   /**
-   * Inicialización de la página {VALIDACIÓN ASINCRONA}
+   * Inicialización de la página
    */
   ngOnInit(): void {
 
     // Si no estamos en modo edición, sale de aquí
-    if(this.router.url.includes('editar')) {
+    if (this.router.url.includes('editar')) {
       this.cargarVideojuego();
-      this.actualizando = false;
+      this.actualizando = true;
 
       // Se carga la validación asíncrona en caso de edición
       this.formulario.get('titulo')?.clearAsyncValidators();
     }
 
     // Carga el contenido de los selects desde la base de datos
+    this.cargarSelectUsuarioInformador();
     this.cargarSelectUsuarioAsignado();
     this.cargarSelectTiposVideojuego();
 
-    // Cuando se selecciona un tipo de videojuego, se debe cargar el combo de
-    // estados para que contenga los estados para ese tipo de videojuego
-    //METODO NUEVO
-    if(this.formulario.get('tipoVideojuego.id')?.value != ""){
-      this.formulario.get('tipoVideojuego.id')?.valueChanges.subscribe(id_tipo_videojuego => {
-        this.cargarSelectEstados(id_tipo_videojuego);
-      });
-    }else{
-      this.cargarSelectAllEstadosNewVideojuego();
-    }
+    // Cuando se selecciona un tipo de tarea, se debe cargar el combo de
+    // estados para que contenga los estados para ese tipo de tarea
+    this.formulario.get('id_tipo_videojuego')?.valueChanges.subscribe(id_tipo_videojuego => {
+      this.cargarSelectEstados(id_tipo_videojuego);
+    });
   }
 
 
@@ -151,28 +129,28 @@ export class EditarVideojuegosPage implements OnInit {
   guardar() {
 
     // Si el formulario no es válido, muestra un mensaje de error y termina
-    if(this.formulario.invalid) {
+    if (this.formulario.invalid) {
 
       // Marco los campos como tocados. De ese modo se mostrarán todos los errores
       // registrados en los campos
       this.formulario.markAllAsTouched();
 
       // Muestro mensaje de error
-      this.dialogService.mostrarMensaje('Por favor, revise los datos');
+      this.showAlert('Por favor, revise los datos');
 
       // Finaliza
       return;
     }
 
-    // Si id_videojuego es > 0 significa que la tarea ya existía. Es actualización
-    if(this.formulario.get('id')?.value > 0) {
+    // Si id_tarea es > 0 significa que la tarea ya existía. Es actualización
+    if (this.formulario.get('id_videojuego')?.value > 0) {
 
-      // Actualiza el videojuego
+      // Actualiza la tarea
       this.actualizarVideojuego();
 
     } else {
 
-      // Crea el videojuego
+      // Crea la tarea
       this.crearVideojuego();
     }
   }
@@ -188,8 +166,8 @@ export class EditarVideojuegosPage implements OnInit {
     const errors = this.formulario.get(campo)?.errors;
     let mensajeError = '';
 
-    if(errors) {
-      for(let e in errors) {
+    if (errors) {
+      for (let e in errors) {
 
         // Obtiene el mensaje
         const mensaje = this.validacionService.getMensajeError(e);
@@ -205,20 +183,29 @@ export class EditarVideojuegosPage implements OnInit {
   }
 
   //-----------------------------------------------------
-  // Funciones Select Asignado
+  // Funciones Select Informaador
   //-----------------------------------------------------
-  cargarSelectUsuarioAsignado() {
-    this.usuariosService.getSelectUsuariosPorNombre('%').subscribe(usuarios => {
-      this.selectAsignado = usuarios;
+  cargarSelectUsuarioInformador() {
+    this.usuariosService.getSelectUsuariosPorNombre('%').subscribe(respuesta => {
+      this.selectInformador = respuesta.datos;
     });
   }
 
   //-----------------------------------------------------
-  // Funciones Select Tipos Videojuego
+  // Funciones Select Asignado
+  //-----------------------------------------------------
+  cargarSelectUsuarioAsignado() {
+    this.usuariosService.getSelectUsuariosPorNombre('%').subscribe(respuesta => {
+      this.selectAsignado = respuesta.datos;
+    });
+  }
+
+  //-----------------------------------------------------
+  // Funciones Select Tipos Tarea
   //-----------------------------------------------------
   cargarSelectTiposVideojuego() {
-    this.tiposVideojuegoService.getTiposVideojuegos().subscribe(tiposVideojuego => {
-      this.selectTiposVideojuego = tiposVideojuego;
+    this.tiposVideojuegoService.getSelectTiposVideojuego('%').subscribe(respuesta => {
+      this.selectTiposVideojuego = respuesta.datos;
     });
   }
 
@@ -226,29 +213,18 @@ export class EditarVideojuegosPage implements OnInit {
   // Funciones Select Estado
   //-----------------------------------------------------
   cargarSelectEstados(id_tipo_videojuego: number) {
-    this.estadosService.getSelectEstadosVideojuegoPorTipoVideojuego(id_tipo_videojuego).subscribe(estadosTipoVideojuego => {
-      this.selectEstadosVideojuego = estadosTipoVideojuego;
-      this.formulario.get('estadoTipoVideojuego.id')?.enable();
+    this.estadosService.getSelectEstadosVideojuegoPorTipoVideojuego(id_tipo_videojuego).subscribe(respuesta => {
+      this.selectEstadosVideojuego = respuesta.datos;
+      this.formulario.get('id_estado')?.enable();
     });
   }
-
-  //-----------------------------------------------------
-  // Funciones Select Estados Videojuego
-  //-----------------------------------------------------
-  cargarSelectAllEstadosNewVideojuego() {
-    this.estadosService.getEstadosVideojuegos().subscribe(estadosTiposVideojuego => {
-      this.selectEstadosVideojuego = estadosTiposVideojuego;
-      console.log("lista",estadosTiposVideojuego);
-    });
-  }
-
 
   //-------------------------------------------------------------------------------------
-  // Funciones de persistencia. Permiten guardar y recuperar videojuegos
+  // Funciones de persistencia. Permiten guardar y recuperar tareas
   //-------------------------------------------------------------------------------------
 
   /**
-   * Cuando estamos editando, este método carga el videojuego que estamos editando en el formulario
+   * Cuando estamos editando, este método carga la tarea que estamos editando en el formulario
    */
   cargarVideojuego() {
 
@@ -257,156 +233,109 @@ export class EditarVideojuegosPage implements OnInit {
     this.activatedRoute.params
 
       // Usamos switchMap, que permite cambiar el id (el parámetro de entrada)
-      // por el videojuego
+      // por la tarea
       .pipe(
-
-        switchMap( ({id}) => this.videojuegosService.getVideojuegoPorId(id) ),
+        switchMap(({id}) => this.videojuegosService.getVideojuegoPorId(id)),
 
         // Este pipe muestra lo que viene
         tap(console.log)
       )
       // Finalmente, este subscribe recibe el resultado, que será el objeto
-      .subscribe({
+      .subscribe(respuesta => {
 
-        // Reciebe el siguiente valor
-        next: (videojuego: Videojuego) =>  {
+        if (respuesta.ok) {
 
           // Cargo los datos en el formulario.
-          this.formulario.reset(videojuego);
+          this.formulario.reset(respuesta.datos);
 
-          this.nombreInformador.setValue(videojuego.informador);
+          this.nombreInformador.setValue(respuesta.datos.informador);
           //this.formulario.patchValue(respuesta.datos);
-        },
 
-        // El observer ha recibido una notificación completa
-        complete: () => {
-        },
-
-        // El observer ha recibido un error
-        error: (error: any) => {
-
-          // Se vuelve al listado
-          this.router.navigate([ '/videojuegos/listado' ]);
-
-          // Muestra un mensaje de error
-          this.dialogService.mostrarToast('No ha sido posible cargar el videojuego: '+ error);
-
-          // Muestra el error por consola
-          console.log(error);
+        } else {
+          this.router.navigate(['/videojuegos/listado']);
         }
       });
   }
 
   /**
-   * Actualiza un videojuego a partir de los datos en el form
+   * Actualiza una tarea a partir de los datos en el form
    */
   actualizarVideojuego() {
     this.videojuegosService.actualizarVideojuego(this.formulario.getRawValue())
-      .subscribe(
+      .subscribe(respuesta => {
+        //MENSAJE DE EXITO
+        this.showToast("Videojuego guardado", 'bottom');
 
-        {
-          // Reciebe el siguiente valor
-          next: (videojuego: Videojuego) =>  {
-          },
-
-          // El observer ha recibido una notificación completa
-          complete: () => {
-            this.dialogService.mostrarToast("Videojuego guardado");
-            this.router.navigate(['/videojuegos/listado']);
-          },
-
-          // El observer ha recibido un error
-          error: (error: any) => {
-            this.dialogService.mostrarMensaje('No ha sido posible crear el videojuego: '+error, 'ERROR');
-            console.log(error);
-          }
-        }
-      );
+      });
   }
 
   /**
-   * Crea un videojuego a partir de los datos en el form y pasa a modo edición
+   * Crea una tarea a partir de los datos en el form y pasa a modo edición
    */
   crearVideojuego() {
 
-    this.videojuegosService.agregarVideojuego(this.formulario.getRawValue()).subscribe(
-      {
-        // Reci  be el siguiente valor
-        next: (videojuego: Videojuego) =>  {
+    this.videojuegosService.agregarVideojuego(this.formulario.getRawValue()).subscribe((respuesta) => {
 
-          console.log("videocreado",videojuego);
+      if (respuesta.ok) {
 
-          // Se ha guardado el videojuego. Paso a modo edición
-          this.router.navigate(['/videojuegos/editar', videojuego.id_videojuego ]);
+        // Se ha guardado la tarea. Paso a modo edición
+        this.router.navigate(['editar-videojuego', respuesta.datos.id_videojuego]);
 
-          // Muestro un toast indicando que se ha guardado el videojuego
-          this.dialogService.mostrarToast("Videojuego creado");
+        // Muestro un toast indicando que se ha guardado el juego
+        this.showToast("Videojuego creado", 'bottom');
 
-          // Muestra la videojuego en el log
-          console.log(videojuego);
-        },
+      } else {
 
-        // El observer ha recibido una notificación completa
-        complete: () => {
-          this.router.navigate(['/videojuegos/listado']);
-        },
-
-        // El observer ha recibido un error
-        error: (error: any) => {
-
-          this.dialogService.mostrarMensaje('No ha sido posible crear el videojuego: '+error, 'ERROR');
-          console.log(error);
-        }
+        this.showAlert(respuesta.mensaje, 'ERROR');
       }
-    );
+    });
   }
 
-  //-----------------------------------------------------
-  // Funciones DataList Informador
-  //-----------------------------------------------------
-  nombreInformadorInput(e : Event) {
 
-    // Hace que pueda ver el evento como un input event
-    const event = e as InputEvent;
+  //-------------------------------------------------------------------------------------
+  // Muestra dialogos
+  //-------------------------------------------------------------------------------------
 
-    // Toma el nombre escrito del informador del datalist
-    const filtro = this.nombreInformador.value;
-    if(!event.inputType || event.inputType == 'insertReplacementText') {
+  async showAlert(mensaje: string, titulo: string = "Atención") {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+    });
 
-      // Copia el identificador
-      this.nombreInformadorCopiarId(filtro);
-
-    } else {
-
-      // Hemos escrito. Significa que se ha invalidado el ID. Lo
-      // pongo a un valor invalido.
-      this.formulario.get('usuarioInformador.id')?.setValue(-1);
-
-      // Obtiene el valor
-      this.usuariosService.getSelectUsuariosPorNombre(filtro).subscribe(usuarios => {
-
-        // Pone la respuesta en el array
-        this.selectInformador = usuarios;
-      });
-    }
+    await alert.present();
   }
 
-  nombreInformadorChange(event : Event) {
-    console.log(this.nombreInformador.value);
+  async showToast(mensaje: string, position: 'top' | 'middle' | 'bottom') {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 1500,
+      position: position
+    });
 
-    // Copia el nombre del informador
-    this.nombreInformadorCopiarId(this.nombreInformador.value);
+    await toast.present();
   }
 
-  /**
-   * Recorre el array del select para buscar el ID y el nombre y los copia
-   */
-  nombreInformadorCopiarId(texto : string) {
-    for(let e of this.selectInformador) {
-      if(e.username === texto) {
+  async solicitarConfirmacion(mensaje: string, titulo: string, onOk: any) {
 
-        this.formulario.get('usuarioInformador.id')?.setValue(e.id);
-      }
-    }
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            onOk();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

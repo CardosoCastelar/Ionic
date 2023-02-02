@@ -2,9 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AlertController} from '@ionic/angular';
 import {tap} from 'rxjs';
 
-import {VideojuegosSpringService} from "../../services/videojuegos-spring.service";
+import {VideojuegosService} from "../../services/videojuegos.service";
 import {Videojuego} from "../../interfaces/videojuego.interface";
-import {DialogService} from "../../shared/services/dialog.service";
 
 @Component({
   selector: 'app-listado-videojuegos',
@@ -18,12 +17,11 @@ export class ListadoVideojuegosPage implements OnInit {
 
 
   constructor(
-    // Servicio para mostrar diálogos
-    private dialogService: DialogService,
+
     // Servicio para mostrar diálogos
     private alertController: AlertController,
     // Acceso al backend
-    private videojuegosService: VideojuegosSpringService
+    private videojuegosService: VideojuegosService
   ) {
   }
 
@@ -59,31 +57,19 @@ export class ListadoVideojuegosPage implements OnInit {
         tap(console.log)
       )
 
-      .subscribe({
+      .subscribe(response => {
 
-        // Reciebe el siguiente valor
-        next: (videojuegos: Videojuego[]) =>  {
+        // Si la respuesta es OK, la lista de tareas se asigna a la respuesta
+        if(response.ok) {
 
-          // Carga los datos
-          this.videojuegos = videojuegos;
+          this.videojuegos = response.datos;
 
-          // Muestra el videojuego en el log
-          console.log('Cargados videojuegos: '+videojuegos.length);
-        },
+        } else {
 
-        // El observer ha recibido una notificación completa
-        complete: () => {
-        },
-
-        // El observer ha recibido un error
-        error: (error: any) => {
-
-          // Muestra un mensaje de error
-          this.dialogService.mostrarMensaje('No ha sido posible cargar los videojuegos: '+ error, 'ERROR');
-
-          // Muestra el error por consola
-          console.log(error);
+          // Muestra el mensaje de error
+          this.showAlert(response.mensaje, 'ERROR');
         }
+
       });
   }
 
@@ -98,14 +84,14 @@ export class ListadoVideojuegosPage implements OnInit {
     const videojuego = this.videojuegos[indice];
 
     // Si el usuario me confirma que quiere eliminar la tarea, la elimina
-    this.solicitarConfirmacion(`¿Está seguro de que quiere eliminar el videojuego: ${videojuego.titulo}?`, 'Atención',
+    this.solicitarConfirmacion(`¿Está seguro de que quiere eliminar la tarea: ${videojuego.titulo}?`, 'Atención',
       () => {
 
         // Elimina la tarea
-        this.videojuegosService.borrarVideojuego(videojuego).subscribe((response: any) => {
+        this.videojuegosService.borrarVideojuego(videojuego).subscribe((response) => {
 
           // Si la respuesta es OK, la lista de tareas se asigna a la respuesta
-          if (response.ok) {
+          if(response.ok) {
 
             // Elimina la tarea del array
             this.videojuegos.splice(indice, 1);

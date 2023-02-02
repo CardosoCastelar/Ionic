@@ -16,7 +16,7 @@ class LnEstadosTipoVideojuego {
 			return self::$instancia;
 		}
 
-		public function getSelectEstadosVideojuegoPorTipo($filtro){
+		public function getSelectEstadosTipoVideojuego($filtro){
 
 			// Carga el singleton 
 			$estadostipovideojuego = EstadosTipoVideojuego::singletonEstadosTipoVideojuego();

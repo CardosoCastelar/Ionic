@@ -8,7 +8,7 @@ class LnTiposVideojuego {
 			$this->db = Conexion::singleton_conexion();
 		}
 
-		public static function singletonLnTiposTarea(){
+		public static function singletonLnTiposVideojuego(){
 			if(!isset(self::$instancia)){
 				$miclase= __CLASS__;
 				self::$instancia = new $miclase;

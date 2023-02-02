@@ -10,7 +10,7 @@ export interface TaskmanVideojuegoResponse {
     datos:   Videojuego;
 }
 
-export interface TaskmanConsultaVideojuego {
+export interface TaskmanConsultaVideojuegos {
     ok:      number;
     mensaje: string;
     datos:   any[];

@@ -15,7 +15,7 @@
     $lnEstados = LnEstadosTipoVideojuego::singletonLnEstadosTipoVideojuego();
 
     // Obtiene la lista
-    $estados = $lnEstados->getSelectEstadosVideojuegoPorTipo($filtro);
+    $estados = $lnEstados->getSelectEstadosTipoVideojuego($filtro);
 
     // Prepara la respuesta en caso de éxito
     $respuesta['ok'] = "1";

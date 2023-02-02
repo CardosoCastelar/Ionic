@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { AutenticacionService} from "./services/autenticacion.service";
-
+import { AutenticacionService } from './services/autenticacion.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -16,10 +15,9 @@ export class AppComponent implements OnInit {
   public appPages = [
     { title: 'Dashboard', url: '/dashboard', icon: 'mail' },
     { title: 'Videojuegos', url: '/listado-videojuegos', icon: 'paper-plane' },
-    { title: 'Users', url: '/listado-usuarios', icon: 'paper-plane' },
   ];
 
-  //public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
+  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(
 
