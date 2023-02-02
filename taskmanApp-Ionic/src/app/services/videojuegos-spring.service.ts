@@ -10,7 +10,7 @@ import { Videojuego } from '../interfaces/videojuego.interface';
 export class VideojuegosSpringService {
 
   //Rutas base
-  private taskmanBaseUrl = environment.taskmanBaseUrlSpring;
+  private taskmanBaseUrl = environment.taskmanBaseUrl;
   private debug = environment.debug;
 
   constructor(

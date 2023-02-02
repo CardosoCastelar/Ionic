@@ -6,10 +6,10 @@ export const environment = {
   production: false,
 
   // URL Base de los servicios de taskman
-  // taskmanBaseUrl: 'http://localhost/daw/daw2-dwec-profesorado/taskman/01-taskman-php-ajax/',
+  taskmanBaseUrl: 'http://localhost:8100',
 
   // URL Base de los servicios de taskman
-  taskmanBaseUrlSpring: 'http://localhost:8080/api',
+  // taskmanBaseUrlSpring: 'http://localhost:8080/api',
 
   // Tiempo en milisegundos que un usuario debe estar sin pulsar una tecla
   // para que se acepte la entrada para lanzar por ejemplo un desplegable

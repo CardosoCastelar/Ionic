@@ -13,7 +13,7 @@ export class AutenticacionService {
  private _usuario : Usuario | undefined;
 
  // Ruta base para todas las llamadas al servicio
- private taskmanBaseUrl = environment.taskmanBaseUrlSpring;
+ private taskmanBaseUrl = environment.taskmanBaseUrl;
  private debug = environment.debug;
 
   // Observable utilizado para ser notificado en los cambios de sesión

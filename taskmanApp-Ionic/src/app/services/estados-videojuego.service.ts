@@ -10,7 +10,7 @@ import { EstadoTipoVideojuego} from "../interfaces/videojuego-estado.interface";
 export class EstadosVideojuegoService {
 
   // Ruta base para todas las llamadas al servicio
-  private taskmanBaseUrl = environment.taskmanBaseUrlSpring;
+  private taskmanBaseUrl = environment.taskmanBaseUrl;
   private debug = environment.debug;
 
   constructor(
