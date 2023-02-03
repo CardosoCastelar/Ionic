@@ -101,7 +101,7 @@ create table videojuegos (
 
 INSERT INTO videojuegos
 (titulo, id_informador, id_asignado, tipo_videojuego, estado, descripcion, fecha_alta, fecha_vencimiento, hora_vencimiento)
-VALUES('Ejemplo de videojuego', 1, 2, 2, 1, null,'current_timestamp()', null, NULL, NULL);
+VALUES('Ejemplo de videojuego', 1, 2, 2, 1, null,'current_timestamp()', NULL, NULL);
 
 ----------------------------------------------------------------
 -- Etiquetas
@@ -115,7 +115,7 @@ create table etiquetas_videojuego (
     primary key(id_videojuego, id_etiqueta),
 
     constraint fk_etiquetas_videojuego_id_etiqueta foreign key (id_etiqueta) references etiquetas(id_etiqueta) on delete cascade,
-    constraint fk_etiquetas_videojuego_id_videojuego foreign key (id_videojuego) references tareas(id_videojuego) on delete cascade
+    constraint fk_etiquetas_videojuego_id_videojuego foreign key (id_videojuego) references videojuegos(id_videojuego) on delete cascade
 );
 
 

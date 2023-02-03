@@ -16,13 +16,13 @@ export interface TaskmanConsultaVideojuegos {
     datos:   any[];
 }
 export interface Videojuego {
-    id_videojuego?:         number;
+    id_videojuego?:    number;
     titulo:            string;
     id_informador:     number;
     informador?:       string;
     id_asignado:       number;
     asignado?:         string;
-    id_tipo_videojuego:     number;
+    id_tipo_videojuego:number;
     tipo?:             string;
     id_estado:         number;
     estado?:           string;

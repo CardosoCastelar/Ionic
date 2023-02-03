@@ -1,3 +1,3 @@
 <?php
-    include "iu/graficas/tareasPorEstado.php"
+    include "iu/graficas/videojuegosPorEstado.php"
 ?>

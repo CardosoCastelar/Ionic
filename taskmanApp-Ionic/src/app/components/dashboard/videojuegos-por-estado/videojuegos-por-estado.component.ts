@@ -24,9 +24,6 @@ export class VideojuegosPorEstadoComponent implements AfterViewInit {
   ngAfterViewInit(): void {
 
     // Carga los datos del gráfico
-    this.videojuegosService.getResumenVideojuegosPorEstado().subscribe(respuesta => {
-
-
       this.videojuegosService.getResumenVideojuegosPorEstado().subscribe(respuesta => {
 
         // Obtiene la respuesta
@@ -67,6 +64,5 @@ export class VideojuegosPorEstadoComponent implements AfterViewInit {
           }]
         };
       });
-    });
   }
 }
