@@ -18,7 +18,7 @@ class Videojuegos{
 
 		public function addVideojuego(Videojuego $v){
 
-			$consulta="INSERT INTO videojuegos (id_videojuego, titulo, id_informador, id_asignado, id_tipo_videojuego, id_estado, descripcion, 
+			$consulta="INSERT INTO videojuegos (id_videojuego, titulo, id_informador, id_asignado, tipo_videojuego, estado, descripcion,
                          fecha_alta, fecha_vencimiento, hora_vencimiento)
 						VALUES(null,?,?,?,?,?,?,?,?,?)";			
 
@@ -38,10 +38,10 @@ class Videojuegos{
 				$query->bindParam(3, $idAsignado);
 				$query->bindParam(4, $idTipoVideojuego);
 				$query->bindParam(5, $idEstado);
-				$query->bindParam(7, $descripcion);
-				$query->bindParam(8, $fechaAlta);
-				$query->bindParam(9, $fechaVencimiento);
-				$query->bindParam(10, $horaVencimiento);
+				$query->bindParam(6, $descripcion);
+				$query->bindParam(7, $fechaAlta);
+				$query->bindParam(8, $fechaVencimiento);
+				$query->bindParam(9, $horaVencimiento);
 
 			// Si no se ha podido insertar lanza una excepción
 			if(!$query->execute()) {
@@ -73,12 +73,12 @@ class Videojuegos{
 				$query->bindParam(3, $idAsignado);
 				$query->bindParam(4, $idTipoVideojuego);
 				$query->bindParam(5, $idEstado);
-				$query->bindParam(7, $descripcion);
-				$query->bindParam(8, $fechaAlta);
-				$query->bindParam(9, $fechaVencimiento);
-				$query->bindParam(10, $horaVencimiento);
+				$query->bindParam(6, $descripcion);
+				$query->bindParam(7, $fechaAlta);
+				$query->bindParam(8, $fechaVencimiento);
+				$query->bindParam(9, $horaVencimiento);
 
-				$query->bindParam(11, $idVideojuego);
+				$query->bindParam(10, $idVideojuego);
 
 			// Si no se ha podido insertar lanza una excepción
 			if(!$query->execute()) {
@@ -242,7 +242,7 @@ class Videojuegos{
 				titulo = ?, 
 				id_informador = ?, 
 				id_asignado = ?, 
-				tipo = ?, 
+				tipo_videojuego = ?,
 				estado = ?, 
 				descripcion = ?, 
 				fecha_alta = ?, 

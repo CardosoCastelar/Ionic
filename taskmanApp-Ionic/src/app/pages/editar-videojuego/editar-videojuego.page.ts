@@ -41,7 +41,6 @@ export class EditarVideojuegoPage implements OnInit {
 
     id_estado: [{
       value: -1,
-      disabled: true
     },
       [Validators.required]
     ],
@@ -274,7 +273,7 @@ export class EditarVideojuegoPage implements OnInit {
    */
   crearVideojuego() {
 
-    this.videojuegosService.agregarVideojuego(this.formulario.getRawValue()).subscribe((respuesta) => {
+    this.videojuegosService.agregarVideojuego(this.formulario.getRawValue()).subscribe(respuesta => {
 
       if (respuesta.ok) {
 

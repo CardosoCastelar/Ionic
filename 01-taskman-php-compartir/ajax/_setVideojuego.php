@@ -43,7 +43,7 @@
     $respuesta['ok'] = "1";
     $respuesta['mensaje'] = "";
     $respuesta['datos'] = [
-        "id_videojuegov" => $videojuego->getIdVideojuego(),
+        "id_videojuego" => $videojuego->getIdVideojuego(),
         "titulo" => $videojuego->getTitulo(),
         "informador" => $videojuego->getIdInformador(),
         "asignado" => $videojuego->getIdAsignado(),
