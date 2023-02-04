@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   public appPages = [
     { title: 'Dashboard', url: '/dashboard', icon: 'mail' },
     { title: 'Videojuegos', url: '/listado-videojuegos', icon: 'paper-plane' },
+    { title: 'Usuarios', url: '/listado-usuarios', icon: 'paper-plane' },
   ];
 
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

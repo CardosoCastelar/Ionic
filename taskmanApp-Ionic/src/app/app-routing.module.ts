@@ -14,6 +14,30 @@ const routes: Routes = [
 //    canActivate:[AutenticacionGuard]
   },
   {
+    path: 'listado-usuarios',
+    loadChildren: () => import('./pages/listado-usuarios/listado-usuarios.module').then( m => m.ListadoUsuariosPageModule),
+//    canLoad:[AutenticacionGuard],
+//    canActivate:[AutenticacionGuard]
+  },
+  {
+    path: 'editar-usuario/:id',
+    loadChildren: () => import('./pages/editar-usuario/editar-usuario.module').then( m => m.EditarUsuarioPageModule),
+//    canLoad:[AutenticacionGuard],
+//    canActivate:[AutenticacionGuard]
+  },
+  {
+    path: 'crear-usuario',
+    loadChildren: () => import('./pages/editar-usuario/editar-usuario.module').then( m => m.EditarUsuarioPageModule),
+//    canLoad:[AutenticacionGuard],
+//    canActivate:[AutenticacionGuard]
+  },
+  {
+    path: 'ver-usuario/:id',
+    loadChildren: () => import('./pages/ver-usuario/ver-usuario.module').then( m => m.VerUsuarioPageModule),
+//    canLoad:[AutenticacionGuard],
+//    canActivate:[AutenticacionGuard]
+  },
+  {
     path: 'listado-videojuegos',
     loadChildren: () => import('./pages/listado-videojuegos/listado-videojuegos.module').then( m => m.ListadoVideojuegosPageModule),
 //    canLoad:[AutenticacionGuard],

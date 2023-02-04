@@ -15,6 +15,49 @@ class LnUsuarios {
 			}
 			return self::$instancia;
 		}
+        /**
+        * En caso de error este método podría lanzar una excepción
+        */
+        public function addUsuario(Usuario $u){
+            // Carga el singleton de juegos
+            $usuarios = Usuarios::singletonUsuarios();
+
+            // Añade la tarea
+            $usuarios->addUsuario($u);
+
+            return $u;
+        }
+        /**
+         * Actualiza la tarea
+         */
+        public function setUsuario(Usuario $u){
+
+            // Carga el singleton de juegos
+            $usuarios = Usuarios::singletonUsuarios();
+            // Inserta el videojuego
+            $usuarios->setUsuario($u);
+
+            return $u;
+        }
+
+        public function getUsuarioPorId($id){
+
+            $usuarios = Usuarios::singletonUsuarios();
+            // Carga la tabla de videojuegos
+            $r = $usuarios->getUsuarioPorId($id);
+            // Retorna el juego
+            return $r;
+        }
+
+        public function getListadoUsuariosFiltradasPorNombreCompleto($filtro){
+
+            // Carga el singleton de videojuegos
+            $usuarios = Usuarios::singletonUsuarios();
+            // Carga la tabla
+            $r = $usuarios->getListadoUsuariosFiltradasPorNombreCompleto($filtro);
+            // Retorna la tabla de juegos
+            return $r;
+        }
 
 		public function getSelectUsuariosPorNombre($filtro){
 
@@ -27,5 +70,13 @@ class LnUsuarios {
 			// Retorna la tabla de tareas 
 			return $r;
 		}
+        public function deleteUsuario($id){
+
+            $usuarios = Usuarios::singletonUsuarios();
+
+            $r = $usuarios->deleteUsuario($id);
+
+            return $r;
+        }
 	}
 ?>

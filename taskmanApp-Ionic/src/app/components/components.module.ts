@@ -8,8 +8,11 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { TablaVideojuegosComponent } from './videojuegos/tabla-videojuegos/tabla-videojuegos.component';
 import { RouterModule } from '@angular/router';
-import {VideojuegosPorEstadoComponent} from "./dashboard/videojuegos-por-estado/videojuegos-por-estado.component";
-//import {CanvasJSChart} from "../../lib/canvasjs.angular.component";
+import { VideojuegosPorEstadoComponent } from "./dashboard/videojuegos-por-estado/videojuegos-por-estado.component";
+import { VideojuegosPorTipoComponent } from "./dashboard/videojuegos-por-tipo/videojuegos-por-tipo.component";
+import { TablaUsuariosComponent } from "./usuarios/tabla-usuarios/tabla-usuarios.component";
+
+import {CanvasJSChart} from "../../lib/canvasjs.angular.component";
 
 
 @NgModule({
@@ -18,13 +21,15 @@ import {VideojuegosPorEstadoComponent} from "./dashboard/videojuegos-por-estado/
     HeaderComponent,
     VideojuegosPorEstadoComponent ,
     FiltroBusquedaComponent,
-    TablaVideojuegosComponent
+    TablaVideojuegosComponent,
+    TablaUsuariosComponent
   ],
   exports: [
     HeaderComponent,
     VideojuegosPorEstadoComponent,
     FiltroBusquedaComponent,
-    TablaVideojuegosComponent
+    TablaVideojuegosComponent,
+    TablaUsuariosComponent
   ],
   imports: [
     CommonModule,

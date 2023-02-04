@@ -2,17 +2,17 @@
 
 <ion-content>
   <form (ngSubmit)="login()">
-   
+
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
       <ion-input name="login" type="text" required [(ngModel)]="credenciales.login"></ion-input>
     </ion-item>
-   
+
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
       <ion-input name="password" type="password" required [(ngModel)]="credenciales.pass"></ion-input>
     </ion-item>
-   
+
     <ion-row>
       <ion-col>
         <ion-button type="submit" color="danger" expand="block">Entrar</ion-button>

@@ -172,6 +172,22 @@ class Videojuegos{
 			return $vVideojuegos;
 		}
 
+        public function getResumenVideojuegosPorTipo(){
+
+            // Prepara la consulta a la base de datos
+            $query=$this->db->preparar($this::SQL_RESUMEN_VIDEOJUEGOS_POR_TIPO);
+
+            // Lanza la consulta contra la BD
+            $query->execute();
+
+            // Carga el resultado de la consulta
+            $vVideojuegos=$query->fetchall();
+
+            // Retorna la tabla con el resultado.
+            // El resultado puede ser un tabla vacía perfectamente
+            return $vVideojuegos;
+        }
+
 
 		//--------------------------------------------------------------------
 		// CONSULTAS SQL
@@ -235,6 +251,15 @@ class Videojuegos{
 			FROM videojuegos v
 				inner join estados_tipo_videojuegos evv on v.estado = evv.id_estado
 			group by evv.nombre
+		SQL;
+
+        const SQL_RESUMEN_VIDEOJUEGOS_POR_TIPO = <<<SQL
+			SELECT
+				count(id_videojuego) as contador,
+				tv.nombre as tipo
+			FROM videojuegos v
+				left join tipo_videojuegos tv on v.tipo_videojuego = tv.id_tipo_videojuego
+			group by tv.nombre
 		SQL;
 
 		const SQL_UPDATE_VIDEOJUEGO = <<< SQL

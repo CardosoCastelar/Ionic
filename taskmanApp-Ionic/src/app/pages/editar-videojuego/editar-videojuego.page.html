@@ -10,7 +10,7 @@
         <ion-list>
             <ion-item>
                 <ion-label position="stacked">Título</ion-label>
-                <ion-input formControlName="titulo" type="text" class="form-control" [readonly]="actualizando"></ion-input>
+                <ion-input formControlName="titulo" type="text" class="form-control"></ion-input>
 
                 <!-- Esto no queda muy bien. Revisar como lo hace la gente -->
                 <ion-label class="form-text text-danger" *ngIf="esCampoNoValido('titulo')">{{ mensajeErrorCampo('titulo') }}</ion-label>

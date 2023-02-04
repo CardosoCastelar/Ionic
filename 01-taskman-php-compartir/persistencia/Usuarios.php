@@ -20,8 +20,7 @@ class Usuarios {
 
 			$consulta="INSERT INTO usuarios (id_usuario, usuario, password, nombre_completo, rol)
 						VALUES(null,?,?,?,?)";
-			
-			$idUsuario=$u->getIdUsuario();
+
             $usuario=$u->getUsuario();
             $password=$u->getPassword();
             $nombreCompleto=$u->getNombreCompleto();
@@ -29,10 +28,10 @@ class Usuarios {
 
 
 			$query=$this->db->preparar($consulta);				
-				$query->bindParam(1, $u->getUsuario());
-				$query->bindParam(2, $u->getPassword());
-				$query->bindParam(3, $u->getNombreCompleto());
-				$query->bindParam(4, $u->getRol());
+				$query->bindParam(1, $usuario);
+				$query->bindParam(2, $password);
+				$query->bindParam(3, $nombreCompleto);
+				$query->bindParam(4, $rol);
 
 			// Si no se ha podido insertar lanza una excepción
 			if(!$query->execute()) {
@@ -40,10 +39,50 @@ class Usuarios {
 			}
 			
 			// Toma el ID que se ha generado en la BD y lo pone en el usuario
-			$u->setIdUsuario($db->getUltimoId());
+			$u->setIdUsuario($this->db->getUltimoId());
 
 			return $u;
 		}
+        public function setUsuario(Usuario $u){
+
+            $idUsuario = $u->getIdUsuario();
+            $usuario = $u->getUsuario();
+            $password = $u->getPassword();
+            $nombreCompleto = $u->getNombreCompleto();
+            $rol = $u->getRol();
+
+            $query=$this->db->preparar($this::SQL_UPDATE_USUARIO);
+            $query->bindParam(1, $usuario);
+            $query->bindParam(2, $password);
+            $query->bindParam(3, $nombreCompleto);
+            $query->bindParam(4, $rol);
+
+            $query->bindParam(5, $idUsuario);
+
+        // Si no se ha podido insertar lanza una excepción
+        if(!$query->execute()) {
+            throw new Exception("No se ha podido insertar la videojuego");
+        }
+            return $u;
+        }
+        public function getUsuarioPorId($id){
+
+            // Prepara la consulta a la base de datos
+            $query=$this->db->preparar($this::SQL_USUARIO_POR_ID);
+
+            // Asigna los parámetros a la consulta. Reemplaza las ?
+            // por los valores pasados como argumento
+            $query->bindParam(1,$id);
+
+            // Lanza la consulta contra la BD
+            $query->execute();
+
+            // Carga el resultado de la consulta
+            $uUsuarios=$query->fetchall();
+
+            // Retorna el primer registro de la tabla
+            return $uUsuarios[0];
+        }
 
 		/**
 		 * Comprueba si el usuario existe y tiene la constraseña y retorna el ID
@@ -53,7 +92,7 @@ class Usuarios {
 			$id_usuario = -1;
 
 			// Define la consulta
-			$consulta="select id from usuarios where username=? and password=?";
+			$consulta="select id_usuario from usuarios where usuario=? and password=?";
 
 			// Asigna los parámetros a la consulta
 			$query=$this->db->preparar($consulta);				
@@ -79,7 +118,7 @@ class Usuarios {
 		 */
 		public function getUsuario($id_usuario){
 
-			$consulta="select id, username, password, nombre_completo, rol from usuarios where id=?";
+			$consulta="select id_usuario, usuario, password, nombre_completo, rol from usuarios where id_usuario=?";
 			
 			$query=$this->db->preparar($consulta);				
 				$query->bindParam(1, $id_usuario);
@@ -127,17 +166,86 @@ class Usuarios {
 			// El resultado puede ser un tabla vacía perfectamente 
 			return $tTareas;
 		}
+        public function getListadoUsuariosFiltradasPorNombreCompleto($filtro){
+
+            // Prepara la consulta a la base de datos
+            $query=$this->db->preparar($this::SQL_LISTADO_USUARIOS_FILTRADAS_POR_NOMBRECOMPLETO);
+
+            // Asigna los parámetros a la consulta. Reemplaza las ?
+            // por los valores pasados como argumento
+            $query->bindParam(1,$filtro);
+
+            // Lanza la consulta contra la BD
+            $query->execute();
+
+            // Carga el resultado de la consulta
+            $uUsuarios=$query->fetchall();
+
+            // Retorna la tabla con el resultado.
+            // El resultado puede ser un tabla vacía perfectamente
+            return $uUsuarios;
+        }
+        public function deleteUsuario($id){
+
+            // Prepara la consulta a la base de datos
+            $query=$this->db->preparar($this::SQL_DELETE_USUARIO);
+
+            // Asigna los parámetros a la consulta. Reemplaza las ?
+            // por los valores pasados como argumento
+            $query->bindParam(1, $id);
+
+            // Lanza la consulta contra la BD
+            $query->execute();
+
+            // Carga el resultado de la consulta
+            $eliminados = $query->rowCount();
+
+            // Retorna la tabla con el resultado.
+            // El resultado puede ser un tabla vacía perfectamente
+            return $eliminados == 1;
+        }
 
 		//--------------------------------------------------------------------
 		// CONSULTAS SQL
 		//--------------------------------------------------------------------
+        const SQL_USUARIO_POR_ID = <<<SQL
+			SELECT
+				id_usuario,
+				usuario,
+				nombre_completo, 
+				rol
+			FROM usuarios u
+			where u.id_usuario = ?;
+		SQL;
 		const SQL_SELECT_USUARIOS_POR_NOMBRE = <<<SQL
 			SELECT
 				id_usuario as id, 
 				usuario as texto
 			FROM usuarios u
 			where u.nombre_completo like ?;
-		SQL;		
+		SQL;
+
+        const SQL_LISTADO_USUARIOS_FILTRADAS_POR_NOMBRECOMPLETO = <<<SQL
+			SELECT
+				id_usuario,
+				usuario,  
+				nombre_completo,  
+				rol
+			FROM usuarios u
+			where u.nombre_completo like ?;
+		SQL;
+        const SQL_DELETE_USUARIO = <<<SQL
+			delete from usuarios where id_usuario = ?;
+		SQL;
+
+        const SQL_UPDATE_USUARIO = <<< SQL
+			UPDATE usuarios set
+				usuario = ?, 
+				password = ?, 
+				nombre_completo = ?, 
+				rol = ?
+			WHERE id_usuario = ?
+		SQL;
 
 	}
 ?>

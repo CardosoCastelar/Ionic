@@ -61,7 +61,11 @@ insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) val
 
 insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (2, 4, "Disponible");
 insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (2, 5, "Sin stock");
-insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (1, 6, "Reserva");
+insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (2, 6, "Reserva");
+
+insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (3, 7, "Disponible");
+insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (3, 8, "Sin stock");
+insert into estados_tipo_videojuegos (id_tipo_videojuego, id_estado, nombre) values (3, 9, "Reserva");
 
 ----------------------------------------------------------------
 -- Etiquetas

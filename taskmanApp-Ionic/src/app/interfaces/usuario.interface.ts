@@ -1,3 +1,21 @@
+export interface TaskmanListaUsuariosResponse {
+  ok:      number;
+  mensaje: string;
+  datos:   Usuario[];
+}
+
+export interface TaskmanUsuarioResponse {
+  ok:      number;
+  mensaje: string;
+  datos:   Usuario;
+}
+
+export interface TaskmanConsultaUsuarios {
+  ok:      number;
+  mensaje: string;
+  datos:   any[];
+}
+
 export interface TaskmanLoginResponse {
     ok:      number;
     mensaje: string;
@@ -5,10 +23,9 @@ export interface TaskmanLoginResponse {
 }
 
 export interface Usuario {
-  id?:             number;
-  username:        string;
-  nombreCompleto?: string;
+  id_usuario?:     number;
+  usuario:         string;
+  password:        string;
+  nombre_completo: string;
   rol:             string;
-  createdAt?:      Date;
-  updatedAt?:      Date;
 }

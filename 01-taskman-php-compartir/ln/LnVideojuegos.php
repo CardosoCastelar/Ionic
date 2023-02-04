@@ -68,6 +68,14 @@ class LnVideojuegos {
 			// Retorna el resultado
 			return $r;
 		}
+        public function getResumenVideojuegosPorTipo() {
+            // Carga el singleton
+            $videojuegos = Videojuegos::singletonVideojuegos();
+            // Carga la tabla de juegos x9019123 vez
+            $r = $videojuegos->getResumenVideojuegosPorTipo();
+            // Retorna el resultado
+            return $r;
+        }
 
 		public function deleteVideojuego($id){
 
