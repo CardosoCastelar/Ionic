@@ -17,16 +17,19 @@ import {CanvasJSChart} from "../../lib/canvasjs.angular.component";
 
 @NgModule({
   declarations: [
-    //CanvasJSChart,
+    CanvasJSChart,
     HeaderComponent,
     VideojuegosPorEstadoComponent ,
+    VideojuegosPorTipoComponent,
     FiltroBusquedaComponent,
     TablaVideojuegosComponent,
     TablaUsuariosComponent
   ],
   exports: [
     HeaderComponent,
+    CanvasJSChart,
     VideojuegosPorEstadoComponent,
+    VideojuegosPorTipoComponent,
     FiltroBusquedaComponent,
     TablaVideojuegosComponent,
     TablaUsuariosComponent

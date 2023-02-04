@@ -3,11 +3,11 @@ import { VideojuegosService} from "../../../services/videojuegos.service";
 
 
 @Component({
-  selector: 'app-videojuegos-por-estado',
-  templateUrl: './videojuegos-por-estado.component.html',
-  styleUrls: ['./videojuegos-por-estado.component.scss'],
+  selector: 'app-videojuegos-por-tipo',
+  templateUrl: './videojuegos-por-tipo.component.html',
+  styleUrls: ['./videojuegos-por-tipo.component.scss'],
 })
-export class VideojuegosPorEstadoComponent implements AfterViewInit {
+export class VideojuegosPorTipoComponent implements AfterViewInit {
 
   // Variable en la que se almacenan datos de la gráfica
   dataPoints: any[] = [];
@@ -25,7 +25,7 @@ export class VideojuegosPorEstadoComponent implements AfterViewInit {
   ngAfterViewInit(): void {
 
     // Carga los datos del gráfico
-      this.videojuegosService.getResumenVideojuegosPorEstado().subscribe(respuesta => {
+      this.videojuegosService.getResumenVideojuegosPorTipo().subscribe(respuesta => {
 
         // Obtiene la respuesta
         let data = respuesta.datos;
@@ -34,7 +34,7 @@ export class VideojuegosPorEstadoComponent implements AfterViewInit {
 
           // Crea el punto
           const punto = {
-            name: data[i].estado,
+            name: data[i].tipo,
             y: Number(data[i].contador)
           }
 
@@ -48,7 +48,7 @@ export class VideojuegosPorEstadoComponent implements AfterViewInit {
           exportEnabled: false,
           animationEnabled: true,
           title: {
-            text: "Videojuegos por estado"
+            text: "Videojuegos por tipo"
           },
           legend: {
             horizontalAlign: "right",

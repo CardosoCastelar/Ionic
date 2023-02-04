@@ -101,4 +101,12 @@ agregarVideojuego(videojuego: Videojuego): Observable<TaskmanVideojuegoResponse>
    */
   getResumenVideojuegosPorEstado() {
     return this.httpClient.get<TaskmanConsultaVideojuegos>(this.generarUrl("_getResumenVideojuegosPorEstado"));
-  }}
+  }
+
+  /**
+   * Obtiene el resumen de tareas por estado para poder hacer un gráfico
+   */
+  getResumenVideojuegosPorTipo() {
+    return this.httpClient.get<TaskmanConsultaVideojuegos>(this.generarUrl("_getResumenVideojuegosPorTipo"));
+  }
+}
