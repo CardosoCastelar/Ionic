@@ -10,8 +10,8 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   // canActivate:[AutenticacionGuard]
   },
   {
     path: 'listado-usuarios',
