@@ -23,7 +23,7 @@ export class AutenticacionGuard implements CanActivate, CanLoad {
         tap(autenticado => {
 
           if(!autenticado) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
           }
 
           return autenticado;
@@ -39,7 +39,7 @@ export class AutenticacionGuard implements CanActivate, CanLoad {
         tap(autenticado => {
 
           if(!autenticado) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
           }
 
           return autenticado;
