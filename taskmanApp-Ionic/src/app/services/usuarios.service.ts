@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TaskmanSelectResponse } from '../interfaces/select.interface';
-import {TaskmanListaUsuariosResponse, TaskmanUsuarioResponse, Usuario} from "../interfaces/usuario.interface";
+import {TaskmanListaUsuariosResponse, TaskmanUsuarioResponse, TaskmanConsultaUsuarios,Usuario} from "../interfaces/usuario.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -96,5 +96,12 @@ export class UsuariosService {
 
     // Llama a eliminar la tarea
     return this.httpClient.post<TaskmanUsuarioResponse>(this.generarUrl("_deleteUsuario"), argumentos);
+  }
+
+  /**
+   * Obtiene el resumen de usuarios filtrados por rol
+   */
+  getResumenUsuariosPorRol() {
+    return this.httpClient.get<TaskmanConsultaUsuarios>(this.generarUrl("_getResumenUsuariosPorRol"));
   }
 }

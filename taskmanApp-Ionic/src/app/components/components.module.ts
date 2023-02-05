@@ -13,6 +13,7 @@ import { VideojuegosPorTipoComponent } from "./dashboard/videojuegos-por-tipo/vi
 import { TablaUsuariosComponent } from "./usuarios/tabla-usuarios/tabla-usuarios.component";
 
 import {CanvasJSChart} from "../../lib/canvasjs.angular.component";
+import {UsuariosPorRolComponent} from "./dashboard/usuarios-por-rol/usuarios-por-rol.component";
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {CanvasJSChart} from "../../lib/canvasjs.angular.component";
     HeaderComponent,
     VideojuegosPorEstadoComponent ,
     VideojuegosPorTipoComponent,
+    UsuariosPorRolComponent,
     FiltroBusquedaComponent,
     TablaVideojuegosComponent,
     TablaUsuariosComponent
@@ -30,6 +32,7 @@ import {CanvasJSChart} from "../../lib/canvasjs.angular.component";
     CanvasJSChart,
     VideojuegosPorEstadoComponent,
     VideojuegosPorTipoComponent,
+    UsuariosPorRolComponent,
     FiltroBusquedaComponent,
     TablaVideojuegosComponent,
     TablaUsuariosComponent
