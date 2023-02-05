@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of, Subject } from 'rxjs';
+import {map, Observable, of, Subject, tap} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TaskmanLoginResponse, Usuario } from '../interfaces/usuario.interface';
 
@@ -30,47 +30,34 @@ export class AutenticacionService {
  }
 
 
- iniciarSesion(login: string, pass: string): Observable<boolean>   {
+  iniciarSesion(login: string, pass: string): Observable<Usuario>   {
 
-   // Argumentos de inicio de sesión
-   const argumentos = {
-     usuario: login,
-     pass: pass
-   }
+    // Argumentos de inicio de sesión
+    const argumentos = {
 
-   // Obtiene solo los datos
-   return this.httpClient.post<TaskmanLoginResponse>(this.generarUrl("_autenticarUsuario"), argumentos)
-     .pipe(
+      'filtro': login,
+      'pass': pass
+    }
 
-         map(respuesta => {
+    // Obtiene solo los datos
+    return this.httpClient.post<Usuario>(this.generarUrl("_getUsuariosPorNombreCompleto"), argumentos)
+      .pipe(
 
-           if(respuesta.ok == 1) {
+        tap(usuario => {
 
-             // Guarda localmente
-             this._usuario = respuesta.datos;
+          // Guarda localmente
+          this._usuario = usuario;
 
-             // Guardo los datos de inicio de sesión. si se recarga la página
-             // no tengo que iniciar de nuevo
-             // Esto sería un fallo de seguridad. Sería necesario utilizar
-             // algún identificador de sesión sin datos confidenciales
-             localStorage.setItem('login', login);
-             localStorage.setItem('pass', pass);
+          // Guardo los datos de inicio de sesión. si se recarga la página
+          // no tengo que iniciar de nuevo
+          // Esto sería un fallo de seguridad. Sería necesario utilizar
+          // algún identificador de sesión sin datos confidenciales
+          localStorage.setItem('login', login);
+          localStorage.setItem('pass', pass);
+        })
+      );
 
-             // Envía a todos los suscriptores
-//             this.__sesionIniciadaSubject.next(true);
 
-             return true;
-           } else {
-
-            // Envía a todos los suscriptores
-//            this.__sesionIniciadaSubject.next(false);
-
-             return false;
-           }
-
-         })
-
-     );
 
  }
 

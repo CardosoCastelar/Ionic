@@ -13,12 +13,14 @@ export class AppComponent implements OnInit {
   showMenu: boolean = false;
 
   public appPages = [
+    { title: 'Login', url: '/login', icon: 'mail' },
     { title: 'Dashboard', url: '/dashboard', icon: 'mail' },
     { title: 'Videojuegos', url: '/listado-videojuegos', icon: 'paper-plane' },
     { title: 'Usuarios', url: '/listado-usuarios', icon: 'paper-plane' },
+
+
   ];
 
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   constructor(
 
@@ -26,7 +28,7 @@ export class AppComponent implements OnInit {
     private router: Router,
 
     // Servicio de autenticación
-    private autenticacionService: AutenticacionService
+    public autenticacionService: AutenticacionService
   ) {}
 
   ngOnInit(): void {

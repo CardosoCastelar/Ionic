@@ -9,6 +9,12 @@ ion-menu.md ion-content {
   --padding-bottom: 20px;
 }
 
+ion-item:hover {
+  cursor: pointer;
+
+}
+
+
 ion-menu.md ion-list {
   padding: 20px 0;
 }

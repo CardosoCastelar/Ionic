@@ -17,6 +17,7 @@ export interface TaskmanConsultaVideojuegos {
 }
 export interface Videojuego {
     id_videojuego?:    number;
+    id?:    number;
     titulo:            string;
     id_informador:     number;
     informador?:       string;

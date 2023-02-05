@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {AutenticacionGuard} from "./guards/autenticacion.guard";
 
 
 const routes: Routes = [
@@ -11,7 +12,7 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule),
    // canLoad:[AutenticacionGuard],
-   // canActivate:[AutenticacionGuard]
+   canActivate:[AutenticacionGuard]
   },
   {
     path: 'listado-usuarios',
@@ -23,44 +24,45 @@ const routes: Routes = [
     path: 'editar-usuario/:id',
     loadChildren: () => import('./pages/editar-usuario/editar-usuario.module').then( m => m.EditarUsuarioPageModule),
 //    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   canActivate:[AutenticacionGuard]
   },
   {
     path: 'crear-usuario',
     loadChildren: () => import('./pages/editar-usuario/editar-usuario.module').then( m => m.EditarUsuarioPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   // canActivate:[AutenticacionGuard]
   },
   {
     path: 'ver-usuario/:id',
     loadChildren: () => import('./pages/ver-usuario/ver-usuario.module').then( m => m.VerUsuarioPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   canActivate:[AutenticacionGuard]
   },
   {
     path: 'listado-videojuegos',
     loadChildren: () => import('./pages/listado-videojuegos/listado-videojuegos.module').then( m => m.ListadoVideojuegosPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   canActivate:[AutenticacionGuard]
   },
   {
     path: 'crear-videojuego',
     loadChildren: () => import('./pages/editar-videojuego/editar-videojuego.module').then( m => m.EditarVideojuegoPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   canActivate:[AutenticacionGuard]
   },
   {
     path: 'editar-videojuego/:id',
     loadChildren: () => import('./pages/editar-videojuego/editar-videojuego.module').then( m => m.EditarVideojuegoPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   canActivate:[AutenticacionGuard]
   },
   {
     path: 'ver-videojuego/:id',
     loadChildren: () => import('./pages/ver-videojuego/ver-videojuego.module').then( m => m.VerVideojuegoPageModule),
-//    canLoad:[AutenticacionGuard],
-//    canActivate:[AutenticacionGuard]
+   // canLoad:[AutenticacionGuard],
+   canActivate:[AutenticacionGuard]
   },
+
   {
     path: '**',
     redirectTo: 'dashboard'

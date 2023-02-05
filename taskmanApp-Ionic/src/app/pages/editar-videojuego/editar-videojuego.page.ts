@@ -11,6 +11,7 @@ import {VideojuegosService} from "../../services/videojuegos.service";
 import {EstadosVideojuegosService} from "../../services/estados-videojuego.service";
 import {TiposVideojuegoService} from "../../services/tipos-videojuego.service";
 import {ValidacionVideojuegosService} from "../../validators/videojuegos/validacion-videojuegos.service";
+import {reload} from "ionicons/icons";
 
 
 @Component({
@@ -29,7 +30,7 @@ export class EditarVideojuegoPage implements OnInit {
   formulario: FormGroup = this.fb.group({
     id_videojuego: [-1],
 
-    titulo: ['',Validators.required],
+    titulo: ['', Validators.required],
     //   [Validators.required, this.validacionService.validarEmpiezaMayuscula],
     //   [this.validacionTituloService]
     // ],
@@ -144,13 +145,15 @@ export class EditarVideojuegoPage implements OnInit {
     // Si id_tarea es > 0 significa que la tarea ya existía. Es actualización
     if (this.formulario.get('id_videojuego')?.value > 0) {
 
-      // Actualiza la tarea
+      // Actualiza el videojuego
       this.actualizarVideojuego();
+
 
     } else {
 
-      // Crea la tarea
+      // Crea el videojuego
       this.crearVideojuego();
+
     }
   }
 
@@ -276,9 +279,10 @@ export class EditarVideojuegoPage implements OnInit {
     this.videojuegosService.agregarVideojuego(this.formulario.getRawValue()).subscribe(respuesta => {
 
       if (respuesta.ok) {
-
+        console.log(respuesta.datos)
         // Se ha guardado la tarea. Paso a modo edición
-        this.router.navigate(['editar-videojuego', respuesta.datos.id_videojuego]);
+        // window.location.reload()
+        this.router.navigate(['editar-videojuego', respuesta.datos.id]);
 
         // Muestro un toast indicando que se ha guardado el juego
         this.showToast("Videojuego creado", 'bottom');
