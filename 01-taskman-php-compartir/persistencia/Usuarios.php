@@ -204,6 +204,12 @@ class Usuarios {
             // El resultado puede ser un tabla vacía perfectamente
             return $eliminados == 1;
         }
+        public function getResumenUsuariosPorRol(){
+            $query=$this->db->preparar($this::SQL_RESUMEN_USUARIOS_POR_ROL);
+            $query->execute();
+            $uUsuarios=$query->fetchall();
+            return $uUsuarios;
+        }
 
 		//--------------------------------------------------------------------
 		// CONSULTAS SQL
@@ -236,6 +242,13 @@ class Usuarios {
 		SQL;
         const SQL_DELETE_USUARIO = <<<SQL
 			delete from usuarios where id_usuario = ?;
+		SQL;
+
+        const SQL_RESUMEN_USUARIOS_POR_ROL = <<<SQL
+		    SELECT
+		        count(id_usuario) as contador, rol
+		        FROM usuarios
+		        GROUP BY rol
 		SQL;
 
         const SQL_UPDATE_USUARIO = <<< SQL

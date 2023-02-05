@@ -70,6 +70,15 @@ class LnUsuarios {
 			// Retorna la tabla de tareas 
 			return $r;
 		}
+
+        public function getResumenUsuariosPorRol() {
+            // Carga el singleton
+            $usuarios = Usuarios::singletonUsuarios();
+            // Carga la tabla de juegos x9019123 vez
+            $r = $usuarios->getResumenUsuariosPorRol();
+            // Retorna el resultado
+            return $r;
+        }
         public function deleteUsuario($id){
 
             $usuarios = Usuarios::singletonUsuarios();
