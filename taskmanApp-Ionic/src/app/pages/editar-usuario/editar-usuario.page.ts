@@ -33,11 +33,10 @@ export class EditarUsuarioPage implements OnInit {
     nombre_completo: ['', [Validators.required]],
     rol: ['', [Validators.required]],
 
-  }, {
-    // 008 Este segundo argumento que puedo enviar al formgroup permite por ejemplo ejecutar
-    // validadores sincronos y asíncronos. Son validaciones al formgroup
+  }, /*{
+    // 008 EstA VALIDACION NO TIENE SENTIDO AQUI
     validators: [this.validacionService.camposNoIguales('id_informador', 'id_asignado')]
-  });
+  }*/ );
 
   // Defino campos sueltos auxiliares que voy a utilizar
   // En este caso utilizo este para el datalist aunque en este caso
@@ -75,7 +74,6 @@ export class EditarUsuarioPage implements OnInit {
       // Se carga la validación asíncrona en caso de edición
       this.formulario.get('usuario')?.clearAsyncValidators();
     }
-
   }
 
   //-------------------------------------------------------------------------------------
